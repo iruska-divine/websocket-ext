@@ -1,0 +1,20 @@
+{
+    "name": "iruska/websocket-ext",
+    "description": "websocket with permessage-deflate support",
+    "type": "library",
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "iruska",
+            "email": "iruska@163.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WebSocketExt\\": "src/"
+        }
+    },
+    "require": {
+        "phrity/websocket": "2.1.3"
+    }
+}
