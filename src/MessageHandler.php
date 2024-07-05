@@ -72,15 +72,15 @@ class MessageHandler extends MessageMessageHandler
         if ($this->enableDeflate) {
             try {
                 // deflate 开始
-                if (!isset($deflator)) {
-                    $deflator = deflate_init(ZLIB_ENCODING_RAW, [
+                if (!isset($this->deflator)) {
+                    $this->deflator = deflate_init(ZLIB_ENCODING_RAW, [
                         'level' => -1,
                         'memory' => 8,
-                        'window' => 9,
+                        'window' => 15,
                         'strategy' => ZLIB_DEFAULT_STRATEGY,
                     ]);
                 }
-                $message->setPayload(substr(deflate_add($deflator, $message->getPayload()), 0, -4));
+                $message->setPayload(substr(deflate_add($this->deflator, $message->getPayload()), 0, -4));
                 // deflate 结束
             } catch (Exception $e) {
                 throw new CloseException(1002, $e->getMessage());
@@ -157,15 +157,15 @@ class MessageHandler extends MessageMessageHandler
         if ($this->enableDeflate) {
             try {
                 // inflate 开始
-                if (!isset($inflator)) {
-                    $inflator = inflate_init(ZLIB_ENCODING_RAW, [
+                if (!isset($this->inflator)) {
+                    $this->inflator = inflate_init(ZLIB_ENCODING_RAW, [
                         'level' => -1,
                         'memory' => 8,
-                        'window' => 9,
+                        'window' => 15,
                         'strategy' => ZLIB_DEFAULT_STRATEGY,
                     ]);
                 }
-                $payload = inflate_add($inflator, $payload . "\x00\x00\xff\xff");
+                $payload = inflate_add($this->inflator, $payload . "\x00\x00\xff\xff");
                 // inflate 结束
             } catch (Exception $e) {
                 throw new CloseException(1002, $e->getMessage());
